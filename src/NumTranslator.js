@@ -5,7 +5,7 @@ export default function NumTranslator(){
     const [displayableText, setDisplayableText] = useState("This is the beginning")
 
     let numbersTranslated= "";
-    
+    let gatheredText = "";
     function calculateNumbers(){
         let j= 0;
 
@@ -77,13 +77,17 @@ export default function NumTranslator(){
 
 
         let numbers = [];
-        for (let r= 0; r< 1001; r++){
+        for (let r= 0; r< 99999; r++){
             numbers[r]= r;
         }
-        // numbers = [ 110, 120, 130, 140, 150, 160, 210, 220 ]
+         numbers = [687,  1001, 500000, 999999]
+        let nancy = "";
+       // numbers = [236];
+      // let gatheredText = ""; moved up to translate for now
+        function hunthousand(numbers) {
         console.log("spit", numbers)
 
-        let nancy = "";
+            nancy = "";
         for (let p=0; p< numbers.length; p++){
             j = numbers[p];
         console.log("here because -", numbers[p])
@@ -168,9 +172,39 @@ export default function NumTranslator(){
         nancy = createText();
         console.log("nan", nancy);
         setDisplayableText(nancy);
+        gatheredText = gatheredText + nancy;
+        nancy = "";
+        temporaryText = "";
+        console.log("HELLO", gatheredText)
         }
-    console.log("nan2", nancy);
-    setDisplayableText(nancy);
+    } //end of scope
+     //[1, 2, 3, .......1000000 ] start with number as an array of 1 - 1 Million
+     // if number (input by user)= 123456 
+        for (let c=0; c<numbers.length; c++) {
+            console.log("FIRSTHALF", numbers[c]%1000)
+            console.log("SECONDHALF", Math.floor(numbers[c]/1000))
+            let translation2 = hunthousand([Math.floor(numbers[c]/1000)]); 
+            if(numbers[c]>1000) {
+                gatheredText = gatheredText + "-thousand-"; 
+            }
+            let translation = hunthousand([numbers[c]%1000]);
+            gatheredText = gatheredText + ", ";  
+          //  gatheredText = gatheredText + translation2; // for every iteration 
+         //   gatheredText = gatheredText + translation; // for every iteration
+        } 
+        console.log("numbersubanything", gatheredText)
+        // for loop through numbers 
+        //     splitting the number by digit 1-2-3 and 4-5-6 
+        //     calling hunthousand passing each value (above digits) as an array      
+        //     updating gatheredText and state with result1-2-3 "thousand"  result4-5-6 
+        //MATH >>>>>>> then number%1000 = 456 && number/1000 = 123.xx 
+        //MATH >>>>>>> so hunthousand[number%] = 456 + thousand + hunthousand[number/]
+        //MATH >>>>>>> get number to put into an array...then divide by 1000
+        //
+
+//    console.log("nan2", nancy);
+  //  setDisplayableText(nancy);
+    setDisplayableText(gatheredText);
     console.log("bob2", displayableText);
     }
 
