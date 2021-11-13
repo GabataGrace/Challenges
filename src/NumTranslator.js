@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
+import {Button} from "react-bootstrap";
 
 
 export default function NumTranslator(){
     const [displayableText, setDisplayableText] = useState("This is the beginning")
+    const [inputValue, setInputValue] = useState("TOLD YA!");
 
     let numbersTranslated= "";
     let gatheredText = "";
@@ -80,13 +82,20 @@ export default function NumTranslator(){
         for (let r= 0; r< 99999; r++){
             numbers[r]= r;
         }
-         numbers = [687,  1001, 500000, 999999]
+         numbers = [1000000]
         let nancy = "";
        // numbers = [236];
       // let gatheredText = ""; moved up to translate for now
+      
         function hunthousand(numbers) {
         console.log("spit", numbers)
-
+//create input field (type # in) updates to state when updated
+//set the value (property of the input field)= to state;
+// set onclick of Button to call hunthousand passing in value of state.
+//recvg result to go in new display box 
+//demonstrate we know how 2 do this using create element... (from Canvas)
+//You may create a holder element inside your HTML,
+// but all other elements should be created through JavaScript.
             nancy = "";
         for (let p=0; p< numbers.length; p++){
             j = numbers[p];
@@ -218,14 +227,34 @@ useEffect(
     );
 
     console.log("gig", displayableText);
-return (<div className= 'NumTranslator'>
+
+function inputChangeHandler(e) {
+    console.log("HI", e);
+setInputValue(e.target.value);
+}
+
+function buttonClickHandler(e) {
+    console.log("OKAY", inputValue);
+    setInputValue(e.target.value);
+    let myelement = document.getElementById("textBox");
+    myelement.innerHTML = hunThousand([123456]);
+  //  myelement.innerHTML = inputValue;
+}
+
+return (
+    <div className= 'NumTranslator'>
+        <div className="userInputContainer">Input Number: 
+            <input className="input" value= {inputValue} onChange={inputChangeHandler}></input>
+            <Button className="inputBoxButton" onClick={buttonClickHandler}>Click To Translate</Button>
+            <textbox className ="textBox" id="textBox"> I CAN SEE YOU!!</textbox>
+        </div>
         <div>Numbers:</div>
         {
         displayableText ? 
-        <div>{displayableText}</div> :
+        <div>displayableText</div> :
         <div></div>
         }
-        </div>
+    </div>
 );
 }
 
