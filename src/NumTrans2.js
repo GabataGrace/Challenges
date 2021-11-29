@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import React from "react";
+import { useEffect, useState, useMemo } from "react";
 
-export default function NumTranslator() {
-  const [displayableText, setDisplayableText] = useState("-");
-  const [inputValue, setInputValue] = useState("TOLD YA!");
-  const [redonow, setReDoNow] = useState("no");
+export default function NumTrans2() {
+  const [displayableText, setDisplayableText] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   let numbersTranslated = "";
   let gatheredText = "";
@@ -67,19 +66,6 @@ export default function NumTranslator() {
     { text: "one-hundred", value: 100 },
   ];
 
-  function inputChangeHandler(e) {
-    //  console.log("HI", e);
-    setInputValue(e.target.value);
-  }
-
-  function buttonClickHandler(e) {
-    // console.log("OKAY", inputValue);
-    setInputValue(e.target.value);
-    let myelement = document.getElementById("textBox");
-
-    myelement.innerHTML = inputValue + " please look at console.";
-  }
-
   function getOnesPosition(integerValue, myControl, temporaryText) {
     // console.log("control", myControl);
     // console.log("int", integerValue);
@@ -88,7 +74,6 @@ export default function NumTranslator() {
   }
 
   function hunthousand(numbers, nancy, temporaryText, j) {
-    // console.log("spit", numbers);
     nancy = "";
 
     function createText() {
@@ -96,19 +81,13 @@ export default function NumTranslator() {
       if (temporaryText.length > 1) {
         temporaryText = temporaryText + "; ";
       }
-      console.log("lil", TensControl.length);
       if (j > 100) {
         for (let q = 0; q < HundredControl.length; q++) {
-          //console.log("bibh", q);
           if (j >= 0 && j < 200) {
-            //j = j;
-            console.log("Im here", j);
           } else {
-            //console.log("im there- should i stay", j);
             let tempValue = "";
             if (j >= HundredControl[q].value) {
               if (j % 100 === 0) {
-                tempValue = ""; //this should only apply to numbers / 100
               } else {
                 if (j % 10 === 0) {
                   tempValue = "*";
@@ -118,43 +97,26 @@ export default function NumTranslator() {
               temporaryText =
                 temporaryText + HundredControl[q].text + tempValue;
               j = j - HundredControl[q].value;
-              // console.log("temp", temporaryText, j);
             }
           }
         }
       }
       for (let k = 0; k < TensControl.length; k++) {
-        //console.log("bib", k);
         if (j >= 0 && j < 20) {
-          //j = j;
-          console.log("Im here", j);
         } else {
-          //  console.log("im there- should i stay", j);
           let tempValue = "";
-          // console.log("mod", j % 10, j);
           if (j >= TensControl[k].value) {
             if (j <= 100 && j % 10 === 0) {
               tempValue = "";
             } else {
-              // tempValue = "*"
               tempValue = tempValue + "-";
             }
             temporaryText = temporaryText + TensControl[k].text + tempValue;
             j = j - TensControl[k].value;
-            // console.log("temp", temporaryText, j);
           }
         }
       }
 
-      console.log("jis ", j);
-      /* function getOnesPosition(integerValue, myControl) {
-        // console.log("control", myControl);
-        // console.log("int", integerValue);
-        temporaryText = temporaryText + myControl[integerValue].text;
-        return temporaryText;
-      } */
-
-      // j is already set
       if (j >= 0) {
         if (j >= 10) {
           numbersTranslated = getOnesPosition(j, TeensControl, temporaryText);
@@ -162,79 +124,52 @@ export default function NumTranslator() {
           numbersTranslated = getOnesPosition(j, OnesControl, temporaryText);
         }
       }
-      // console.log("bob", numbersTranslated);
       return numbersTranslated;
     }
     for (let p = 0; p < numbers.length; p++) {
       j = numbers[p];
-      //console.log("here because -", numbers[p]);
-      //console.log("we here because -", p);
-      //console.log("im see it also as -", j);
       nancy = createText();
-      //console.log("nan", nancy);
-      setDisplayableText(nancy);
       gatheredText = gatheredText + nancy;
       nancy = "";
       temporaryText = "";
-      //console.log("HELLO", gatheredText);
     }
     return gatheredText;
   }
+  let soFar = "";
+  let numbers123 = [];
+  numbers123 = [1, 10, 999, 1000, 10000, 999999, 1000000, 10000000, 999000000];
 
-  function calculateNumbers() {
+  function calculateNumbers(numbers) {
     let j = 0;
-    //console.log(OnesControl);
     let temporaryText = "";
 
-    let numbers = [1];
-    for (let r = 0; r < 99999; r++) {
-      numbers[r] = r;
-    }
-    // numbers = [1, 10, 999, 1000, 10000, 999999, 1000000, 10000000, 999000000];
-    numbers = [1000000];
     let nancy = "";
 
     let finalDisplayableText = " ";
     for (let c = 0; c < numbers.length; c++) {
-      console.log("-----------------cacukalation-----------------------------");
       let sectionMillions = 0;
       let sectionThousands = 0;
       let sectionOnes = 0;
 
       let amountleft = numbers[c];
-      console.warn("starting with :", amountleft, ":");
       let oneMillion = 1000000;
       if (amountleft >= oneMillion) {
-        //  console.log("amountleft - sectionMillions * 1000000");
         sectionMillions = Math.floor(numbers[c] / oneMillion);
-        //  console.log(amountleft, "-", sectionMillions * oneMillion);
         amountleft = amountleft - sectionMillions * oneMillion;
-        //  console.log("leaveing", amountleft);
       }
       let oneThousand = 1000;
       if (amountleft >= oneThousand) {
-        // console.log("amountleft / oneThousand");
         sectionThousands = Math.floor(amountleft / oneThousand);
-        // console.log(amountleft, "-", sectionThousands * oneThousand);
         amountleft = amountleft - sectionThousands * oneThousand;
-        // console.log("leaveing", amountleft);
       }
       sectionOnes = amountleft;
 
-      console.warn("-------verify----------------------------------------");
-      console.log(sectionMillions, "* 1000000", "-------millions");
-      console.log(sectionThousands, "* 1000", "--------thousands");
-      console.log(sectionOnes, "----------- ones");
-      console.warn("good to here?");
-
-      console.log("time to translate three peices->:");
       let thisNumber = " ";
-      //console.log("say----" + sectionMillions + "millions:  in words");
-      //console.log("say----" + sectionThousands + "thousand   in words");
-      //console.log("say----" + sectionOnes + "ones in words");
+      console.log("say----" + sectionMillions + "millions:  in words");
+      console.log("say----" + sectionThousands + "thousand   in words");
+      console.log("say----" + sectionOnes + "ones in words");
       let trans = "";
       if (sectionMillions > 0) {
-        //console.log(sectionMillions + "-million,");
         j = 0;
         trans = hunthousand([sectionMillions], nancy, temporaryText, j);
         thisNumber = thisNumber + trans + "-million, ";
@@ -242,7 +177,6 @@ export default function NumTranslator() {
       }
       if (sectionThousands > 0) {
         j = 0;
-        //console.log(sectionThousands + "-thousand,");
         trans = "";
         trans = hunthousand([sectionThousands], nancy, temporaryText, j);
 
@@ -250,7 +184,6 @@ export default function NumTranslator() {
         gatheredText = "";
       }
       if (sectionOnes > 0) {
-        //console.log(sectionOnes);
         j = 0;
         trans = "";
         trans = hunthousand([sectionOnes], nancy, temporaryText, j);
@@ -258,40 +191,57 @@ export default function NumTranslator() {
         finalDisplayableText = thisNumber;
         gatheredText = "";
       }
-      //console.warn("so the final number is: " + thisNumber);
-      //console.log("check it to here");
+      soFar = soFar + "; " + thisNumber;
     }
-    //console.log("numbersubanything", gatheredText);
-
-    setDisplayableText(displayableText + finalDisplayableText);
-    //console.log("bob2", displayableText);
+    return soFar;
   }
 
-  let display = calculateNumbers();
-  useEffect(() => {
-    //    setDisplayableText(display);
-  }, [redonow]);
+  let display = calculateNumbers(numbers123);
 
-  console.log("CalculateNumbers-=-", display);
+  const inputChangeHandler = (e) => {
+    //  console.log("HI", e);
+    setInputValue(e.target.value);
+  };
 
+  const buttonClickHandler = (e) => {
+    //console.log("OKAY", inputValue);
+    //setInputValue(e.target.value);
+    let myelement = document.getElementById("textBox");
+    //myelement.innerHTML = transLateSingleNUmber(inputValue);
+    //console.log(e.target.value, " is entered");
+    //console.log("inputValue = ", inputValue);
+    let ourNumber = inputValue;
+    //console.log("ourNumber = ", ourNumber);
+    let manualNumbers = [ourNumber];
+    //console.log("our array = ", manualNumbers);
+    soFar = "";
+    let temp = calculateNumbers(manualNumbers);
+    //console.log("theAnswer", temp);
+
+    myelement.innerHTML = "your number is ->" + temp + "<--EOL";
+  };
+
+  let staticTranslation = soFar;
   return (
     <div className="NumTranslator">
       <div className="userInputContainer">
         Input Number:
         <input
+          placeholder="enter a number"
+          type="text"
           className="input"
           value={inputValue}
           onChange={inputChangeHandler}
         ></input>
-        <Button className="inputBoxButton" onClick={buttonClickHandler}>
+        <button className="inputBoxButton" onClick={buttonClickHandler}>
           Click To Translate
-        </Button>
-        <textbox className="textBox" id="textBox">
+        </button>
+        <div className="textBox" id="textBox">
           "I CAN SEE YOU!!"
-        </textbox>
+        </div>
       </div>
       <div>Numbers:</div>
-      {displayableText ? <div>{displayableText}</div> : <div></div>}
+      <div>{staticTranslation}</div>
     </div>
   );
 }
